@@ -3,338 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechService Portal - Integração HaloITSM</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#eff6ff',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#1e3a8a'
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <title>Portal de Suporte - PoC Integração ITSM</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 500px; margin: auto; }
+        input, textarea, button { width: 100%; margin-bottom: 10px; padding: 10px; }
+        button { background-color: #007BFF; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background-color: #0056b3; }
+        #status { font-weight: bold; margin-top: 15px; }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans antialiased">
+<body>
 
-    <!-- Navbar Fixa -->
-    <nav class="bg-white shadow-lg fixed w-full z-50 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <h1 class="text-2xl font-bold text-primary-700">TechService Portal</h1>
-                </div>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="#inicio" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Início</a>
-                    <a href="#catalogo" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Catálogo de Serviços</a>
-                    <a href="#suporte" class="text-gray-700 hover:text-primary-600 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Suporte</a>
-                    <a href="#login" class="bg-primary-600 hover:bg-primary-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition duration-200 shadow-md">
-                        <i class="fas fa-sign-in-alt mr-2"></i>Login do Cliente
-                    </a>
-                </div>
-                <!-- Mobile menu button -->
-                <div class="md:hidden flex items-center">
-                    <button class="text-gray-700 hover:text-primary-600 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <h2>Abertura de Chamado (PoC Integração API)</h2>
+    <p>Preencha os dados para injetar o ticket no Halo ITSM:</p>
 
-    <!-- Hero Section -->
-    <section id="inicio" class="pt-20 pb-24 bg-gradient-to-r from-primary-600 to-primary-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-                Gestão de Serviços e Suporte<br>
-                <span class="text-primary-100">Integrado com HaloITSM</span>
-            </h1>
-            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto opacity-90 leading-relaxed">
-                Ambiente de testes para integração completa com a plataforma HaloITSM. 
-                Abra chamados, consulte serviços e receba suporte técnico de forma ágil.
-            </p>
-            <a href="#suporte" class="inline-flex items-center bg-white text-primary-700 hover:bg-gray-100 px-8 py-4 rounded-full text-lg font-semibold shadow-2xl transform hover:scale-105 transition-all duration-300">
-                <i class="fas fa-ticket-alt mr-3 text-2xl"></i>
-                Abrir Chamado Agora
-            </a>
-        </div>
-    </section>
+    <input type="text" id="tituloChamado" placeholder="Resumo (Ex: Sistema inoperante)">
+    <textarea id="descricaoChamado" rows="4" placeholder="Descreva os detalhes do incidente..."></textarea>
+    <button onclick="enviarChamado()">Injetar no Halo ITSM</button>
+    
+    <p id="statusMensagem"></p>
 
-    <!-- Catálogo de Serviços -->
-    <section id="catalogo" class="py-24 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Catálogo de Serviços</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Escolha o tipo de serviço que melhor atende sua necessidade</p>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1: Reportar Incidente -->
-                <div class="group bg-white border-2 border-gray-100 hover:border-primary-300 rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 cursor-pointer">
-                    <div class="w-20 h-20 bg-red-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-red-200 transition duration-300">
-                        <i class="fas fa-exclamation-triangle text-3xl text-red-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Reportar Incidente</h3>
-                    <p class="text-gray-600 mb-6 text-center leading-relaxed">Quebras, falhas técnicas ou problemas urgentes no sistema</p>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-primary-600 text-xl group-hover:translate-x-2 transition duration-300"></i>
-                    </div>
-                </div>
-
-                <!-- Card 2: Solicitação de Serviço -->
-                <div class="group bg-white border-2 border-gray-100 hover:border-primary-300 rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 cursor-pointer">
-                    <div class="w-20 h-20 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-blue-200 transition duration-300">
-                        <i class="fas fa-plus-circle text-3xl text-blue-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Solicitação de Serviço</h3>
-                    <p class="text-gray-600 mb-6 text-center leading-relaxed">Novos acessos, equipamentos ou configurações</p>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-primary-600 text-xl group-hover:translate-x-2 transition duration-300"></i>
-                    </div>
-                </div>
-
-                <!-- Card 3: Base de Conhecimento -->
-                <div class="group bg-white border-2 border-gray-100 hover:border-primary-300 rounded-2xl p-8 hover:shadow-2xl transform hover:-translate-y-4 transition-all duration-300 cursor-pointer">
-                    <div class="w-20 h-20 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-green-200 transition duration-300">
-                        <i class="fas fa-book text-3xl text-green-600"></i>
-                    </div>
-                    <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">Base de Conhecimento</h3>
-                    <p class="text-gray-600 mb-6 text-center leading-relaxed">Dúvidas frequentes e soluções para problemas comuns</p>
-                    <div class="flex items-center justify-center">
-                        <i class="fas fa-arrow-right text-primary-600 text-xl group-hover:translate-x-2 transition duration-300"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Seção de Teste HaloITSM -->
-    <section id="suporte" class="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">Teste de Integração HaloITSM</h2>
-                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Formulário de abertura de ticket pronto para integração com a API HaloITSM</p>
-            </div>
-
-            <!-- Formulário de Abertura de Ticket -->
-            <form id="haloitstm-ticket-form" class="bg-white rounded-3xl shadow-2xl p-12 border border-gray-100 max-w-2xl mx-auto">
-                <div class="space-y-8">
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Nome Completo</label>
-                        <input type="text" name="nome" required 
-                               class="w-full px-5 py-4 border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-500 focus:border-primary-500 transition duration-200 text-lg placeholder-gray-400" 
-                               placeholder="Digite seu nome completo">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Email Corporativo</label>
-                        <input type="email" name="email" required 
-                               class="w-full px-5 py-4 border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-500 focus:border-primary-500 transition duration-200 text-lg placeholder-gray-400" 
-                               placeholder="seu.email@empresa.com">
-                    </div>
-
-                    <div class="grid md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Categoria</label>
-                            <select name="categoria" required class="w-full px-5 py-4 border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-500 focus:border-primary-500 transition duration-200 text-lg">
-                                <option value="">Selecione a categoria</option>
-                                <option value="incidente">Incidente Técnico</option>
-                                <option value="solicitacao">Solicitação de Serviço</option>
-                                <option value="acesso">Solicitação de Acesso</option>
-                                <option value="hardware">Hardware/Equipamento</option>
-                                <option value="software">Software/Licença</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-semibold text-gray-700 mb-3">Urgência</label>
-                            <select name="urgencia" required class="w-full px-5 py-4 border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-500 focus:border-primary-500 transition duration-200 text-lg">
-                                <option value="">Selecione a urgência</option>
-                                <option value="baixa">Baixa</option>
-                                <option value="normal">Normal</option>
-                                <option value="alta">Alta</option>
-                                <option value="critica">Crítica</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700 mb-3">Descrição do Problema</label>
-                        <textarea name="descricao" rows="6" required 
-                                  class="w-full px-5 py-4 border border-gray-200 rounded-xl focus:ring-4 focus:ring-primary-500 focus:border-primary-500 transition duration-200 text-lg resize-vertical placeholder-gray-400" 
-                                  placeholder="Descreva detalhadamente o problema ou solicitação..."></textarea>
-                    </div>
-
-                    <button type="submit" 
-                            class="w-full bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-6 px-8 rounded-2xl text-xl shadow-2xl transform hover:scale-105 hover:shadow-3xl transition-all duration-300 flex items-center justify-center">
-                        <i class="fas fa-paper-plane mr-3"></i>
-                        Enviar Ticket para HaloITSM
-                    </button>
-                </div>
-            </form>
-
-            <!-- Mensagem de Sucesso (oculta por padrão) -->
-            <div id="success-message" class="mt-8 bg-green-100 border border-green-400 text-green-800 px-8 py-6 rounded-2xl hidden">
-                <div class="flex items-center">
-                    <i class="fas fa-check-circle text-2xl mr-4"></i>
-                    <div>
-                        <h3 class="font-bold text-lg">Ticket enviado com sucesso!</h3>
-                        <p>Seu chamado foi registrado no HaloITSM. Você receberá um email com o número do ticket em breve.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Widget Placeholder HaloITSM -->
-        <!-- 
-            ========================================================
-            AQUI SERÁ INJETADO O SCRIPT DO CHAT/WIDGET DO HALOITSM
-            Exemplo: <script src="https://haloitstm.com/widget.js"></script>
-            ========================================================
-        -->
-        <div id="halo-chat-widget" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 py-12 text-center bg-gray-100 rounded-2xl">
-            <div class="text-gray-500">
-                <i class="fas fa-comments text-4xl mb-4 block"></i>
-                <h3 class="text-2xl font-bold mb-2">Widget HaloITSM Chat</h3>
-                <p>Placeholder para o widget de chat/portal do HaloITSM</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="bg-primary-900 text-white py-12 mt-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid md:grid-cols-3 gap-8 mb-8">
-                <div>
-                    <h3 class="text-2xl font-bold mb-4">TechService Portal</h3>
-                    <p class="text-primary-200">Plataforma de gestão de serviços integrada com HaloITSM para suporte eficiente.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Links Úteis</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition duration-200">Início</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-200">Catálogo de Serviços</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-200">Base de Conhecimento</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-semibold mb-4">Legal</h4>
-                    <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition duration-200">Política de Privacidade</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-200">Termos de Uso</a></li>
-                        <li><a href="#" class="hover:text-white transition duration-200">Aviso Legal</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="border-t border-primary-800 pt-8 text-center text-primary-200">
-                <p>&copy; 2024 TechService Portal. Todos os direitos reservados. | Ambiente de Testes HaloITSM</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- JavaScript -->
     <script>
-        // Smooth scroll para links de âncora
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+    async function enviarChamado() {
+        document.getElementById("statusMensagem").innerText = "Estabelecendo conexão e negociando token...";
+        document.getElementById("statusMensagem").style.color = "blue";
+        
+        // ========================================================
+        // INSIRA SUAS CREDENCIAIS AQUI:
+        const tenantUrl = "COLE_AQUI_A_URL_DO_SEU_HALO_ITSM_TRIAL"; 
+        const clientId = "COLE_AQUI_O_SEU_CLIENT_ID";
+        const clientSecret = "COLE_AQUI_O_SEU_CLIENT_SECRET";
+        // ========================================================
 
-        // Manipulação do formulário HaloITSM
-        document.getElementById('haloitstm-ticket-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        try {
+            // 1. Solicitando o Token de Acesso (OAuth2)
+            const tokenResponse = await fetch(`${tenantUrl}/auth/token`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({
+                    'grant_type': 'client_credentials',
+                    'client_id': clientId,
+                    'client_secret': clientSecret
+                })
+            });
             
-            // Captura dos dados do formulário
-            const formData = new FormData(this);
-            const ticketData = {
-                nome: formData.get('nome'),
-                email: formData.get('email'),
-                categoria: formData.get('categoria'),
-                urgencia: formData.get('urgencia'),
-                descricao: formData.get('descricao'),
-                timestamp: new Date().toISOString()
+            if (!tokenResponse.ok) throw new Error("Falha ao obter Token de Autorização.");
+            
+            const tokenData = await tokenResponse.json();
+            const accessToken = tokenData.access_token;
+
+            // 2. Montando o Payload do Chamado (JSON)
+            const titulo = document.getElementById("tituloChamado").value;
+            const descricao = document.getElementById("descricaoChamado").value;
+
+            const ticketPayload = {
+                "summary": titulo,
+                "details": descricao,
+                "tickettype_id": 1 // ID padrão para Incidentes
             };
 
-            // Exibe loading no botão
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-3"></i>Enviando...';
-            submitBtn.disabled = true;
-
-            // SIMULAÇÃO DE INTEGRAÇÃO COM HALOITSM API
-            /*
-            fetch('https://sua-instancia.haloit-sm.com/api/v1/tickets', {
+            // 3. Disparando os dados para a API
+            document.getElementById("statusMensagem").innerText = "Token recebido. Criando chamado...";
+            
+            const ticketResponse = await fetch(`${tenantUrl}/api/Tickets`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer SEU_TOKEN_HALOITSM',
-                    'Accept': 'application/json'
+                    'Authorization': `Bearer ${accessToken}`,
+                    'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    ticket: {
-                        requester: {
-                            name: ticketData.nome,
-                            email: ticketData.email
-                        },
-                        subject: `Novo ticket - ${ticketData.categoria}`,
-                        description: ticketData.descricao,
-                        priority: ticketData.urgencia,
-                        category: ticketData.categoria,
-                        custom_fields: {
-                            source: 'techservice-portal'
-                        }
-                    }
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Ticket criado:', data);
-                // Lógica de sucesso
-            })
-            .catch(error => {
-                console.error('Erro:', error);
-                // Lógica de erro
+                body: JSON.stringify([ticketPayload])
             });
-            */
 
-            // Simulação de resposta bem-sucedida (para testes)
-            setTimeout(() => {
-                // Esconde formulário e mostra mensagem de sucesso
-                this.style.display = 'none';
-                document.getElementById('success-message').classList.remove('hidden');
-                
-                // Restaura botão
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        });
-
-        // Efeito de scroll na navbar
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('nav');
-            if (window.scrollY > 100) {
-                navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-                navbar.style.backdropFilter = 'blur(20px)';
+            if(ticketResponse.ok) {
+                document.getElementById("statusMensagem").innerText = "Sucesso Absoluto! Chamado criado no painel do Halo.";
+                document.getElementById("statusMensagem").style.color = "green";
             } else {
-                navbar.style.backgroundColor = 'white';
-                navbar.style.backdropFilter = 'none';
+                throw new Error("API recusou o payload do ticket.");
             }
-        });
+
+        } catch (error) {
+            console.error("Erro na operação:", error);
+            document.getElementById("statusMensagem").innerText = "Operação bloqueada. Verifique o Console (F12) para análise técnica.";
+            document.getElementById("statusMensagem").style.color = "red";
+        }
+    }
     </script>
 </body>
 </html>
